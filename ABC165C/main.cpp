@@ -1,62 +1,68 @@
-#include <stdio.h>
-#include <math.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <queue>
+#include<stdio.h>
+#include<vector>
+#include<string.h>
+#include<iostream>
+#include<string>
+#include<cmath>
+#include<algorithm>
+#include<stdexcept>
+
 using namespace std;
+using ll = long long int;
 
-int N, M, Q;
-vector<int> a, b, c, d;
-int ans = 0;
+const string startTMessage = "開始時間を入力してください：";
+const string endTMessage = "終了時間を入力してください：";
+const string judgeTMessage = "判定する時間を入力してください；";
+const string errStrMessage = "時間は半角数字(0～23)で入力してください\n";
+const string errNumMessage = "時間は半角数字(0～23)で入力してください\n";
 
-void dfs(vector<int> s)
-{
-    if (s.size()> N)
-    {
+//string st,en,jd;
+//int stNum,enNum,jdNum;
 
-        int now = 0;
-        for (int m = 0; m < Q; m++)
-        {
-            if (s[b[m]] - s[a[m]] == c[m])now += d[m];
-        }
-        ans = max(now, ans);
-        //
-        //for(int f=0;f<s.size();f++){
-        //cout << s[f]<< " ";
-        //}
-        //cout <<ans<<endl;
-        //
-        return;
-    }
-    ////
-    //for(int f=0;f<s.size();f++){
-    //    cout << s[f]<< " ";
-    //}
-    //cout << endl;
-    //
-    s.push_back(s.back());
-    while(s.back()<=M){
-        dfs(s);
-        s.back()++;
-    }
+class T{
+	public:
+		std::vector<string> message;
+		std::vector<int> time;
+
+		T(){
+			message.push_back(startTMessage);
+			message.push_back(endTMessage);
+			message.push_back(judgeTMessage);
+			time.reserve(3);
+		}
+};
+
+
+int numCheck(string s){
+	int num;
+	try{
+		num = std::stoi(s);
+	}catch(std::invalid_argument e){
+		std::cout << errStrMessage;
+		return -1;
+	}catch(std::out_of_range e){
+		std::cout << errNumMessage;
+		return -1;
+	}
+	return num;
 }
 
-int main(void)
-{
-    cin >> N >> M >> Q;
-    b=vector<int>(Q);
-    a=vector<int>(Q);
-    c=vector<int>(Q);
-    d=vector<int>(Q);
-    for (int k = 0; k < Q; k++)
-    {
-        int n, l, p;
-        cin >> n >> l >> c[k] >> d[k];
-        a[k] = n;
-        b[k] = l;
-    }
-    vector<int> ax(1,1);
-    dfs(ax);
-    cout <<ans <<endl;
+int userInput(string message){
+	string inputNum;
+	cout <<message;
+	cin >>inputNum;
+	return numCheck(inputNum);
+}
+
+
+int main(void){
+
+	T cla;
+	for(int i=0;i<cla.message.size();i++){
+		cla.time[i]=userInput(cla.message[i]);
+		if(cla.time[i]==-1){
+			i=0;continue;
+		}
+	}
+	return 0;
+}
